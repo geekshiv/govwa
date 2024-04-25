@@ -14,3 +14,5 @@ jobs:
         uses: PortSwigger/dastardly-github-action@v1.0.0
       - name: Run Dastardly Action Step
         uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: 'https://ginandjuice.shop'
