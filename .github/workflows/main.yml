@@ -7,12 +7,20 @@ on:
     branches:
       - master
 jobs:
-  tests:
+  scan-with-dastardly:
+    name: Scan with Dastardly
     runs-on: ubuntu-latest
+
     steps:
-      - name: Dastardly Scan Action          
-        uses: PortSwigger/dastardly-github-action@v1.0.0
-      - name: Run Dastardly Action Step
+      - name: Run Dastardly Scan
         uses: PortSwigger/dastardly-github-action@main
         with:
-          target-url: 'https://ginandjuice.shop'
+          target-url: 'https://jiocinema.com/'
+
+      - name: Publish Dastardly Scan Report
+        if: always()
+        uses: mikepenz/action-junit-report@v4
+        with:
+          check_name: 'Dastardly Scan Report'
+          report_paths: '**/dastardly-report.xml'
+          require_tests: true
