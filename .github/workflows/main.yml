@@ -16,6 +16,10 @@ jobs:
         uses: PortSwigger/dastardly-github-action@main
         with:
           target-url: 'https://apis-jiovoot.voot.com/'
+      - name: Run Dastardly Scan
+        uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: 'https://auth-jiocinema.voot.com/'
 
       - name: Publish Dastardly Scan Report
         if: always()
