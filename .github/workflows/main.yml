@@ -1,4 +1,4 @@
-name: Run Gosec
+name: Run Dastardly
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
       - name: Run Dastardly Scan
         uses: PortSwigger/dastardly-github-action@main
         with:
-          target-url: 'https://jiocinema.com/'
+          target-url: 'https://apis-jiovoot.voot.com/'
 
       - name: Publish Dastardly Scan Report
         if: always()
