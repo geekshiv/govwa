@@ -6,25 +6,25 @@ on:
   pull_request:
     branches:
       - master
-jobs:
-  scan-with-dastardly:
-    name: Scan with Dastardly
-    runs-on: ubuntu-latest
+# jobs:
+#   scan-with-dastardly:
+#     name: Scan with Dastardly
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Run Dastardly Scan
-        uses: PortSwigger/dastardly-github-action@main
-        with:
-          target-url: 'https://apis-jiovoot.voot.com/'
-      - name: Run Dastardly Scan
-        uses: PortSwigger/dastardly-github-action@main
-        with:
-          target-url: 'https://auth-jiocinema.voot.com/'
+#     steps:
+#       - name: Run Dastardly Scan
+#         uses: PortSwigger/dastardly-github-action@main
+#         with:
+#           target-url: 'https://apis-jiovoot.voot.com/'
+#       - name: Run Dastardly Scan
+#         uses: PortSwigger/dastardly-github-action@main
+#         with:
+#           target-url: 'https://auth-jiocinema.voot.com/'
 
-      - name: Publish Dastardly Scan Report
-        if: always()
-        uses: mikepenz/action-junit-report@v4
-        with:
-          check_name: 'Dastardly Scan Report'
-          report_paths: '**/dastardly-report.xml'
-          require_tests: true
+#       - name: Publish Dastardly Scan Report
+#         if: always()
+#         uses: mikepenz/action-junit-report@v4
+#         with:
+#           check_name: 'Dastardly Scan Report'
+#           report_paths: '**/dastardly-report.xml'
+#           require_tests: true
