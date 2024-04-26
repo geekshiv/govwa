@@ -1,11 +1,11 @@
-name: Run Dastardly
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+# name: Run Dastardly
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches:
+#       - master
 # jobs:
 #   scan-with-dastardly:
 #     name: Scan with Dastardly
