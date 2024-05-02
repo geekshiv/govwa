@@ -1,30 +1,40 @@
-# name: Run Dastardly
-# on:
-#   push:
-#     branches:
-#       - master
-#   pull_request:
-#     branches:
-#       - master
-# jobs:
-#   scan-with-dastardly:
-#     name: Scan with Dastardly
-#     runs-on: ubuntu-latest
+name: SentinelOne CNS
 
-#     steps:
-#       - name: Run Dastardly Scan
-#         uses: PortSwigger/dastardly-github-action@main
-#         with:
-#           target-url: 'https://apis-jiovoot.voot.com/'
-#       - name: Run Dastardly Scan
-#         uses: PortSwigger/dastardly-github-action@main
-#         with:
-#           target-url: 'https://auth-jiocinema.voot.com/'
+on:
+  # Triggers the workflow when pull_request created on master/main branch
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+    branches: [ master, main ]
 
-#       - name: Publish Dastardly Scan Report
-#         if: always()
-#         uses: mikepenz/action-junit-report@v4
-#         with:
-#           check_name: 'Dastardly Scan Report'
-#           report_paths: '**/dastardly-report.xml'
-#           require_tests: true
+jobs:
+  s1-cns-cli:
+    runs-on: ubuntu-latest
+    container:
+      image: pingsafe/s1cnscli:latest
+      options: --entrypoint ""
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Configure SentinelOne CNS CLI
+        run: s1-cns-cli config --api-token $TOKEN
+        env:
+         TOKEN: ${{secrets.SENTINELONE_CNS_TOKEN}}
+
+      - name: Configure git config
+        run: git config --global --add safe.directory $PWD
+
+      - name: Run Secret Detector
+        run:  s1-cns-cli scan secret -d $PWD --pull-request origin/$SRC $DEST
+        env:
+          DEST: ${{ github.event.pull_request.base.sha }}
+          SRC: ${{ github.event.pull_request.head.ref }}
+
+      - name: Run Iac Scanner
+        run:  s1-cns-cli scan iac -d $PWD
+
+      - name: Run Vuln Scanner
+        run:  s1-cns-cli scan vuln -d $PWD
